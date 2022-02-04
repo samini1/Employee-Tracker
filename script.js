@@ -77,8 +77,8 @@ function addRole() {
     inquirer.prompt([
         {
             type: 'input',
-            name: 'roleName',
-            message: 'Enter the new role name'
+            name: 'title',
+            message: 'Enter the title of this role'
         },
         {
             type: 'input',
