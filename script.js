@@ -19,7 +19,31 @@ function startPrompt() {
                 'Update an employee role'
             ]
         }
-    ])    
+    ])
+    .then(function (choice) {
+        switch (choice) {
+            case 'View all departments':
+                viewDepartments();
+                break;
+            case 'View all roles' :
+                viewRoles();
+                break;
+            case 'View all employees' :
+                viewEmployees();
+                break;
+            case 'Add a department' :
+                addDepartment();
+            case 'Add a role' :
+                addRole(); 
+                break;
+            case 'Add an employee' :
+                addEmployee();
+                break;
+            case 'Update an employee role' :
+                updateEmployee();
+                break;
+        }
+    })     
 }
 
 //View all departments from start prompt
