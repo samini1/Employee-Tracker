@@ -43,26 +43,83 @@ function startPrompt() {
                 updateEmployee();
                 break;
         }
-    })     
-}
+    });     
+};
 
 //View all departments from start prompt
-function viewDepartments() {};
+function viewDepartments() {
+    //present department names and id
+};
 
 //view all roles
-function viewRoles() {};
+function viewRoles() {
+    //present job title, id, department
+};
 
 //view all employees
-function viewEmployees() {};
+function viewEmployees() {
+    //show employee id, first names, last names, job titles, depatments, salary, managers 
+};
 
 //Add a deparment
-function addDepartment() {};
+function addDepartment() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'depName',
+            message: 'Enter the new department name'
+        }
+    ])
+};
 
 //Add a role
-function addRole() {};
+function addRole() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'roleName',
+            message: 'Enter the new role name'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'Enter the salary for this role'
+        },
+        {
+            type: 'input',
+            name: 'roleDepartment',
+            message: 'Enter the department for this role'
+        }        
+    ])
+};
 
 //Add an employee
-function addEmployee() {};
+function addEmployee() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'firstName',
+            message: 'Enter first name'
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: 'Enter the salary for this role'
+        },
+        {
+            type: 'input',
+            name: 'empRole',
+            message: 'Enter the role for this employee'
+        },
+        {
+            type: 'input',
+            name: 'manager',
+            message: 'Enter a manager for this employee'
+        }        
+    ])
+};
 
 //Update an employee role
-function updateEmployee() {};
+function updateEmployee() {
+    //select employee to update and their new role, update in database
+};
