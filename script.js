@@ -1,6 +1,12 @@
 const inquirer = require('inquirer')
 const mysql = require('mysql2')
-const consoleTable = require('console.table');
+const cTable = require('console.table');
+//connect to database employees
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    database: 'employees'
+});
 
 //prompt when starting app
 function startPrompt() {
@@ -49,16 +55,21 @@ function startPrompt() {
 //View all departments from start prompt
 function viewDepartments() {
     //present department names and id
+    connection.query(
+        'SELECT * FROM department'
+    )
 };
 
 //view all roles
 function viewRoles() {
     //present job title, id, department
+    connection.query('SELECT role.title, role.id, department.name AS department FROM roles JOIN roles ON roles.department_id;')
 };
 
 //view all employees
 function viewEmployees() {
-    //show employee id, first names, last names, job titles, depatments, salary, managers 
+    //show employee id, first names, last names, job titles, depatments, salary, managers
+    connection.query('SELECT employees.id, employees.first_name, employees.last_name, roles.title, department.name AS department, roles.salary AS salary, CONCAT(employees.first_name, " ", employees.last_name) AS manager FROM employees JOIN roles ON employees.role_id = role.id JOIN department ON roles.department_id = department.id;') 
 };
 
 //Add a deparment
@@ -122,4 +133,15 @@ function addEmployee() {
 //Update an employee role
 function updateEmployee() {
     //select employee to update and their new role, update in database
+    connection.query('SELECT employees.id, roles.title FROM employees JOIN roles ON employees.role_id = roles.id;', function(err, res) {
+        if (err) throw err
+        console.log(res)
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'id',
+                message: 'Enter the corresponding id for the employee you would like to update'
+            }
+        ]) 
+    } )
 };
