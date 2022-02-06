@@ -5,6 +5,7 @@ const cTable = require('console.table');
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
+    password: 'password',
     database: 'employees'
 });
 
@@ -56,20 +57,37 @@ function startPrompt() {
 function viewDepartments() {
     //present department names and id
     connection.query(
-        'SELECT * FROM department'
-    )
+        'SELECT * FROM department;', 
+        (err, result) => {
+            console.table(result);
+            startPrompt();
+        }
+    )  
 };
 
 //view all roles
 function viewRoles() {
     //present job title, id, department
-    connection.query('SELECT role.title, role.id, department.name AS department FROM roles JOIN roles ON roles.department_id;')
+    connection.query(`SELECT role.title, role.id, department.name AS department 
+    FROM roles 
+    JOIN roles ON roles.department_id;`,
+    (err, result) => {
+        console.table(result);
+        startPrompt();
+    });
 };
 
 //view all employees
 function viewEmployees() {
     //show employee id, first names, last names, job titles, depatments, salary, managers
-    connection.query('SELECT employees.id, employees.first_name, employees.last_name, roles.title, department.name AS department, roles.salary AS salary, CONCAT(employees.first_name, " ", employees.last_name) AS manager FROM employees JOIN roles ON employees.role_id = role.id JOIN department ON roles.department_id = department.id;') 
+    connection.query(`SELECT employees.id, employees.first_name, employees.last_name, roles.title, department.name AS department, roles.salary AS salary, CONCAT(employees.first_name, " ", employees.last_name) AS manager 
+    FROM employees 
+    JOIN roles ON employees.role_id = role.id 
+    JOIN department ON roles.department_id = department.id;`,
+    (err, result) => {
+        console.table(result);
+     startPrompt(); 
+    });    
 };
 
 //Add a deparment
@@ -81,6 +99,12 @@ function addDepartment() {
             message: 'Enter the new department name'
         }
     ])
+    .then((answer) => {
+        connection.query(
+            `INSERT INTO department(name)
+            VALUES (?);`,
+            answer.depName)
+    })
 };
 
 //Add a role
@@ -98,14 +122,19 @@ function addRole() {
         },
         {
             type: 'input',
-            name: 'roleDepartment',
-            message: 'Enter the department for this role'
+            name: 'department',
+            message: 'Enter a department id number'            
         }        
     ])
+    .then((answer) => {
+        connection.query(
+            `INSERT INTO roles(title, salary, department_id)
+            VALUES (?, ?, ?)`, (answer.title, answer.salary, department_id))
+    });
 };
 
 //Add an employee
-function addEmployee() {
+function addEmployee() {   
     inquirer.prompt([
         {
             type: 'input',
@@ -125,7 +154,7 @@ function addEmployee() {
         {
             type: 'input',
             name: 'manager',
-            message: 'Enter a manager for this employee'
+            message: 'Enter the id number of the manager for this employee'
         }        
     ])
 };
@@ -133,15 +162,20 @@ function addEmployee() {
 //Update an employee role
 function updateEmployee() {
     //select employee to update and their new role, update in database
-    connection.query('SELECT employees.id, roles.title FROM employees JOIN roles ON employees.role_id = roles.id;', function(err, res) {
+    connection.query(`SELECT employees.id, roles.title 
+    FROM employees 
+    JOIN roles ON employees.role_id = roles.id;`, (err, res) => {
         if (err) throw err
         console.log(res)
         inquirer.prompt([
             {
                 type: 'input',
                 name: 'id',
-                message: 'Enter the corresponding id for the employee you would like to update'
+                message: 'Enter the id number for the employee you would like to update'
             }
         ]) 
     } )
 };
+
+//initiate
+startPrompt();
