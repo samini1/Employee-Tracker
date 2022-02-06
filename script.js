@@ -82,7 +82,7 @@ function viewEmployees() {
     //show employee id, first names, last names, job titles, depatments, salary, managers
     connection.query(`SELECT employees.id, employees.first_name, employees.last_name, roles.title, department.name AS department, roles.salary AS salary, CONCAT(employees.first_name, " ", employees.last_name) AS manager 
     FROM employees 
-    JOIN roles ON employees.role_id = role.id 
+    JOIN roles ON employees.role_id = roles.id  
     JOIN department ON roles.department_id = department.id;`,
     (err, result) => {
         console.table(result);
