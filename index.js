@@ -76,7 +76,7 @@ function viewDepartments() {
 function viewRoles() {
   //present job title, id, department
   connection.query(
-    `SELECT roles.title, roles.id, department.name AS department FROM roles JOIN department ON roles.department_id = department.id;`,
+    `SELECT roles.title, roles.id, department.name AS department FROM roles JOIN department ON roles.department_id = department.id ORDER BY roles.id;`,
     (err, result) => {
       console.table(result);
       startPrompt();
