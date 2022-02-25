@@ -118,7 +118,6 @@ function addDepartment() {
         answer.depName
       );
       viewDepartments();
-      startPrompt();
     });
 }
 
@@ -149,7 +148,6 @@ function addRole() {
           ([answer.title, answer.salary, answer.department])       
       );
       viewRoles();
-      startPrompt();
     });
 }
 
@@ -214,7 +212,6 @@ function updateEmployee() {
         connection.query(
           `UPDATE employees SET role_id = ${answer.roleID} WHERE id = ${answer.empID}`
         );
-        viewEmployees();
         startPrompt();
       });
     }
